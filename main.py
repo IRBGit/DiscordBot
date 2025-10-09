@@ -20,6 +20,15 @@ async def on_ready():
     activity = discord.Streaming(name='my execution', url='https://twitch.tv')
     await bot.change_presence(status=discord.Status.online, activity=activity)
 
+@bot.event
+async def on_reaction_add(reaction: discord.Reaction, user):
+    if user.bot:
+        return
+    try:
+        await reaction.message.add_reaction(reaction.emoji)
+    except discord.HTTPException:
+        pass
+
 # activates on every message the bot can see
 @bot.event
 async def on_message(message: discord.Message):
@@ -65,6 +74,7 @@ async def hello(ctx):
 async def join(ctx):
     await ctx.author.voice.channel.connect()
 
+#annoy the shit out of alex command
 @bot.command()
 async def ping_alex(ctx):
     for i in range(100):
