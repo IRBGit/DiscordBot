@@ -72,33 +72,35 @@ async def on_typing(channel:discord.TextChannel, user:discord.User, when: dateti
 #commands
 #-----------------------------------------------------------------
 #Simple ping command
-@bot.command()
+@bot.command(name="ping")
 async def ping(message: discord.Message):
     await message.channel.send(f"Pong! {round(bot.latency * 1000)}ms")
 
 #simple hello command
-@bot.command()
+@bot.command(name="hello")
 async def hello(message: discord.Message):
     await message.channel.typing()
     await message.channel.send(f"Hello {message.author.mention}!")
 
 #annoy the shit out of alex command
-@bot.command()
+@bot.command(name="ping_alex")
 async def ping_alex(message: discord.Message):
     for i in range(100):
         await message.channel.typing()
         await message.channel.send("<@469252577326792704>")
 
 #join voice channel command
-@bot.command()
+@bot.command(name="join")
 async def join(message: discord.Message):
     await discord.VoiceChannel.connect(message.author.voice.channel, reconnect=True)
 
 #leave voice channel command (not working)
-@bot.command()
+@bot.command(name="leave")
 async def leave(message: discord.Message):
     await message.author.voice.channel.disconnect()
 
+# @bot.command(name="play")
+# async def play(message: discord.Message):
 
 
 bot.run(TOKEN)
