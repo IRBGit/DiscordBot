@@ -58,6 +58,15 @@ async def on_message(message: discord.Message):
     # Allow other commands to still work
     await bot.process_commands(message)
 
+#Harass people who are typing
+@bot.event
+async def on_typing(channel:discord.TextChannel, user:discord.User, when: datetime.datetime):
+    if user.bot:
+        return
+    else:
+        await channel.typing()
+        await channel.send(f"Hey {user.mention}, stop typing!")
+
 #Simple ping command
 @bot.command()
 async def ping(ctx):
@@ -69,11 +78,6 @@ async def hello(ctx):
     await ctx.typing()
     await ctx.send(f"Hello {ctx.author.mention}!")
 
-#join voice channel command
-@bot.command()
-async def join(ctx):
-    await ctx.author.voice.channel.connect()
-
 #annoy the shit out of alex command
 @bot.command()
 async def ping_alex(ctx):
@@ -81,9 +85,18 @@ async def ping_alex(ctx):
         await ctx.typing()
         await ctx.send("<@469252577326792704>")
 
+#join voice channel command
+@bot.command()
+async def join(ctx: discord.message):
+    await ctx.author.voice.channel.connect()
+    if(ctx.voice_client.is_connected):
+        ctx.voice_client.play
+
 #leave voice channel command (not working)
-# @bot.command()
-# async def leave(ctx):
-#     await ctx.voice_client.disconnect()
+@bot.command()
+async def leave(ctx):
+    await ctx.voice_client.disconnect()
+
+
 
 bot.run(TOKEN)
