@@ -41,7 +41,7 @@ async def on_message(message: discord.Message):
         #Alex
         if message.author.id == 469252577326792704:
             await message.channel.send("Hey Twiddly")
-            await message.author.timeout(datetime.timedelta(seconds=69))
+            await message.author.timeout(datetime.timedelta(seconds=1))
             
         #Ian
         if message.author.id == 431111804157034496:
