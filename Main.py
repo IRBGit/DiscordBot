@@ -66,8 +66,9 @@ async def on_typing(channel:discord.TextChannel, user:discord.User, when: dateti
     if user.bot:
         return
     else:
-        await channel.typing()
-        await channel.send(f"Hey {user.mention}, stop typing!")
+        if random.randint(1, 100) == 1:
+            await channel.typing()
+            await channel.send(f"Hey {user.mention}, nobody cares!")
 
 #commands
 #-----------------------------------------------------------------
