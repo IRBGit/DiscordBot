@@ -2,6 +2,8 @@ import random
 import datetime
 from datetime import timedelta
 import os
+import requests
+from requests import request
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -21,6 +23,7 @@ async def on_ready():
     print(f"Logged in as {bot.user} (id={bot.user.id})")
     activity = discord.Streaming(name='my execution', url='https://twitch.tv')
     await bot.change_presence(status=discord.Status.online, activity=activity)
+    bot.tree.sync()
     # for guild in bot.guilds:
     #     for channel in guild.text_channels:
     #             await channel.send("Bot is now online!")
@@ -40,7 +43,9 @@ async def on_message(message: discord.Message):
     # Ignore bots
     if message.author.bot:
         return
-    #await message.author.voice.channel.connect() (working)
+    
+    if message.
+
     if random.randint(1, 10) == 1:
 
         #Alex
@@ -103,8 +108,9 @@ async def join(message: discord.Message):
 async def leave(message: discord.Message):
     await message.author.voice.channel.disconnect()
 
-# @bot.command(name="play")
-# async def play(message: discord.Message):
-
+@bot.command(name="play")
+async def play(message: discord.Message):
+    messag
+    
 
 bot.run(TOKEN)
