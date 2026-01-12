@@ -21,9 +21,10 @@ async def on_ready():
     print(f"Logged in as {bot.user} (id={bot.user.id})")
     activity = discord.Streaming(name='my execution', url='https://twitch.tv')
     await bot.change_presence(status=discord.Status.online, activity=activity)
-    # for guild in bot.guilds:
-    #     for channel in guild.text_channels:
-    #             await channel.send("Bot is now online!")
+    for guild in bot.guilds:
+        for channel in guild.text_channels:
+            if (channel.category_id != 827388541130637312 and channel.category_id != 795050327958224976 ):
+                await channel.send("Bot is now online!")
 
 @bot.event
 async def on_reaction_add(reaction: discord.Reaction, user):
