@@ -6,6 +6,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 load_dotenv()
+import requests
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 if not TOKEN:
@@ -21,10 +22,10 @@ async def on_ready():
     print(f"Logged in as {bot.user} (id={bot.user.id})")
     activity = discord.Streaming(name='my execution', url='https://twitch.tv')
     await bot.change_presence(status=discord.Status.online, activity=activity)
-    for guild in bot.guilds:
-        for channel in guild.text_channels:
-            if (channel.category_id != 827388541130637312 and channel.category_id != 795050327958224976 ):
-                await channel.send("Bot is now online!")
+    # for guild in bot.guilds:
+    #     for channel in guild.text_channels:
+    #         if (channel.category_id != 827388541130637312 and channel.category_id != 795050327958224976 ):
+    #             await channel.send("Bot is now online!")
 
 @bot.event
 async def on_reaction_add(reaction: discord.Reaction, user):
@@ -48,7 +49,6 @@ async def on_message(message: discord.Message):
         if message.author.id == 469252577326792704:
             await message.channel.send("Hey Twiddly")
             await message.author.timeout(datetime.timedelta(seconds=1))
-            
         #Ian
         if message.author.id == 431111804157034496:
             await message.channel.send("Hey Corn Boy")
@@ -93,6 +93,16 @@ async def ping_alex(message: discord.Message):
     for i in range(100):
         await message.channel.typing()
         await message.channel.send("<@469252577326792704>")
+
+@bot.command(name="TonyServerStatus")
+async def tonyServerStatus(message: discord.Message):
+    response=requests.get("https://api.mcsrvstat.us/3/TheChicagoSmash.aternos.me")
+    response=response.json()
+    if response["version"]=='● Offline':
+        status='Offline'
+    else:
+        status='Online'
+    await message.channel.send(response["hostname"]+" is "+(status))
 
 #join voice channel command
 @bot.command(name="join")
