@@ -94,6 +94,7 @@ async def ping_alex(message: discord.Message):
         await message.channel.typing()
         await message.channel.send("<@469252577326792704>")
 
+# command to check the status of Toby's minecraft server
 @bot.command(name="TonyServerStatus")
 async def tonyServerStatus(message: discord.Message):
     response=requests.get("https://api.mcsrvstat.us/3/TheChicagoSmash.aternos.me")
@@ -104,18 +105,16 @@ async def tonyServerStatus(message: discord.Message):
         status='Online'
     await message.channel.send(response["hostname"]+" is "+(status))
 
-#join voice channel command
-@bot.command(name="join")
+#play womp/join voice channel command
+@bot.command(name="play")
 async def join(message: discord.Message):
-    await discord.VoiceChannel.connect(message.author.voice.channel, reconnect=True)
+    vc=await discord.VoiceChannel.connect(message.author.voice.channel, reconnect=True)
+    vc.play(discord.FFmpegPCMAudio('DiscordBot/wompwomp.mp3')
+)
 
 #leave voice channel command (not working)
 @bot.command(name="leave")
 async def leave(message: discord.Message):
     await message.author.voice.channel.disconnect()
-
-# @bot.command(name="play")
-# async def play(message: discord.Message):
-
 
 bot.run(TOKEN)
