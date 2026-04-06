@@ -7,6 +7,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 load_dotenv()
 import requests
+from googleAIAPI import googleai
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 if not TOKEN:
@@ -87,6 +88,30 @@ async def hello(message: discord.Message):
     await message.channel.typing()
     await message.channel.send(f"Hello {message.author.mention}!")
 
+#ask the AI command
+@bot.command(name="ask")
+async def ask_ai(ctx: commands.Context):
+    """Ask the AI a question. Usage: _ask <your question>"""
+    # Get the message content after the command
+    user_input = ctx.message.content[5:].strip()  # Remove "_ask " prefix
+    
+    if not user_input:
+        await ctx.channel.send("Please provide a question. Usage: `_ask <your question>`")
+        return
+    
+    async with ctx.channel.typing():
+        try:
+            response = googleai.send_message_to_api(user_input)
+            
+            # Discord has a 2000 character limit, so split if needed
+            if len(response) > 2000:
+                for i in range(0, len(response), 2000):
+                    await ctx.channel.send(response[i:i+2000])
+            else:
+                await ctx.channel.send(response)
+        except Exception as e:
+            await ctx.channel.send(f"Error communicating with AI: {str(e)}")
+
 #annoy the shit out of alex command
 @bot.command(name="ping_alex")
 async def ping_alex(message: discord.Message):
@@ -99,6 +124,8 @@ async def ping_alex(message: discord.Message):
 async def tonyServerStatus(message: discord.Message):
     response=requests.get("https://api.mcsrvstat.us/3/TheChicagoSmash.aternos.me")
     response=response.json()
+    status='Offline'
+    #if response["version"].includes('Offline')
     if response["version"]=='● Offline':
         status='Offline'
     else:
